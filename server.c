@@ -1,10 +1,12 @@
 #include "minitalk.h"
 
+char *_str_result;
 
 int setting_bits(int bit)
 {
    static int indx;
-   static short int byte ;
+   static arr_indx;
+   static unsigned char byte ;
    char mask;
 
     if (indx == 7)
@@ -48,6 +50,7 @@ int main ()
     int PID;
 
     PID = getpid ();
+    _str_result = (char *) malloc (100000 * sizeof (char));
     printf ("server PID: %d\n",PID);
     struct sigaction sig_act;
     sig_act.sa_sigaction = &signal_handler;

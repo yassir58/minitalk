@@ -1,6 +1,6 @@
 #include "minitalk.h"
 
-void extract_bits(char byte, int PID)
+void extract_bits(unsigned char byte, int PID)
 {
     int i = 0;
     int bit = 0;
@@ -26,7 +26,7 @@ void extract_bits(char byte, int PID)
         }
         byte >>= 1;
         i++;
-        usleep(100);
+        usleep(800);
     }
 }
 
