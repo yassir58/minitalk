@@ -7,6 +7,6 @@
 #include <stdio.h> // for testing 
 #include <string.h>
 
-
+#define BIT_COUNT 8
 
 #endif

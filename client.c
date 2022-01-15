@@ -2,9 +2,11 @@
 
 void extract_bits(unsigned char byte, int PID)
 {
-    int i = 0;
-    int bit = 0;
+    int i;
+    int bit;
 
+    i = 0;
+    bit = 0;
     while (i < 8)
     {
         bit = byte & 1;
@@ -12,7 +14,7 @@ void extract_bits(unsigned char byte, int PID)
         {
             if (kill (PID, SIGUSR1) == -1)
             {
-                write (1, "Invalid PID\n",13);
+                write (2, "Invalid PID\n",13);
                 exit (1);
             }
         }
@@ -20,7 +22,7 @@ void extract_bits(unsigned char byte, int PID)
         {
             if (kill (PID, SIGUSR2) == -1)
             {
-                 write (1, "Invalid PID\n",13);
+                 write (2, "Invalid PID\n",13);
                  exit (1);
             }
         }
@@ -53,7 +55,7 @@ int main(int argc, char *argv[])
     struct sigaction client_act ;
     if (argc < 3)
     {
-        write (1, "make sure you have 3 arguments !\n",34);
+        write (2, "make sure you have 3 arguments !\n",34);
         exit (1);
     }
 
