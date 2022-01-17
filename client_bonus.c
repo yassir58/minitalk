@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yelatman <yelatman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:03:25 by yelatman          #+#    #+#             */
-/*   Updated: 2022/01/17 15:46:18 by yelatman         ###   ########.fr       */
+/*   Updated: 2022/01/17 15:44:21 by yelatman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,16 @@ void	send_str(char *str, int PID)
 	extract_bits (str[i], PID);
 }
 
+void	signal_handler(int signo)
+{
+	usleep (500);
+	write (1, "Message recieved from SERVER\n", 30);
+	signo++;
+}
+
 int	main(int argc, char *argv[])
 {
+	struct sigaction	client_act ;
 	int					pid;
 
 	if (argc < 3)
@@ -71,6 +79,8 @@ int	main(int argc, char *argv[])
 		write (2, "make sure you have 3 arguments !\n", 34);
 		exit (1);
 	}
+	client_act.sa_handler = &signal_handler;
+	sigaction (SIGUSR2, &client_act, NULL);
 	pid = ft_atoi (argv[argc - 2]);
 	send_str (argv [argc -1], pid);
 	return (0);

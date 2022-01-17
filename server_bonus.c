@@ -6,7 +6,7 @@
 /*   By: yelatman <yelatman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:16:33 by yelatman          #+#    #+#             */
-/*   Updated: 2022/01/17 15:46:02 by yelatman         ###   ########.fr       */
+/*   Updated: 2022/01/17 14:54:00 by yelatman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ char	set_bit(int signo)
 	return (0);
 }
 
-void	print_byte(char *byte, int *indx, int temp, int signo)
+int	print_byte(char *byte, int *indx, int temp, int signo)
 {
 	char	c;
 
 	byte[temp] = set_bit(signo);
 	*indx = 0;
 	c = bin_to_ascii (byte);
+	if (c == 0)
+		return (0);
 	write (1, &c, sizeof (char));
+	return (1);
 }
 
 void	signal_handler(int signo, siginfo_t *siginfo, void *context)
@@ -54,8 +57,10 @@ void	signal_handler(int signo, siginfo_t *siginfo, void *context)
 	static int	indx;
 	static char	byte[8];
 	int			temp;
+	int			check;
 
 	context = NULL;
+	check = 1;
 	if (!g_pid)
 		g_pid = siginfo->si_pid;
 	if (g_pid != siginfo->si_pid)
@@ -65,9 +70,14 @@ void	signal_handler(int signo, siginfo_t *siginfo, void *context)
 	}
 	temp = BIT_COUNT - (++indx);
 	if (temp == 0)
-		print_byte (byte, &indx, temp, signo);
+		check = print_byte (byte, &indx, temp, signo);
 	else
 		byte[temp] = set_bit(signo);
+	if (!check)
+	{
+		if (kill (siginfo->si_pid, SIGUSR2) == -1)
+			write (2, "Error returning signal\n", 24);
+	}
 }
 
 int	main(void)
