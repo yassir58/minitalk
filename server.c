@@ -6,7 +6,7 @@
 /*   By: yelatman <yelatman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:16:33 by yelatman          #+#    #+#             */
-/*   Updated: 2022/01/17 15:46:02 by yelatman         ###   ########.fr       */
+/*   Updated: 2022/01/17 19:32:05 by yelatman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	main(void)
 	write (1, "\n", 1);
 	sig_act.sa_sigaction = &signal_handler;
 	sig_act.sa_flags = SA_SIGINFO;
-	sig_act.sa_flags = SA_NODEFER;
 	sigaction (SIGUSR2, &sig_act, NULL);
 	sigaction (SIGUSR1, &sig_act, NULL);
 	while (1)
